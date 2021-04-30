@@ -1,22 +1,18 @@
 // main.js
 
-import * as components from './components'
+import * as components from "./components";
 
 const LoneSelectLib = {
-  install(Vue, options = {}) {
-    // components
-    console.log(components)
+  install(Vue) {
     for (const componentName in components) {
-      console.log(componentName)
-      const component = components[componentName]
-
-      Vue.component(component.name, component)
+      const component = components[componentName];
+      Vue.component(component.name, component);
     }
-  }
-}
+  },
+};
 
-export default LoneSelectLib
+export default LoneSelectLib;
 
-if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(LoneSelectLib)
+if (typeof window !== undefined && window.Vue) {
+  window.Vue.use(LoneSelectLib);
 }
