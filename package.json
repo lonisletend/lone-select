@@ -1,13 +1,32 @@
 {
   "name": "lone-select",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
+  "main": "dist/lone-select.umd.min.js",
+  "unpkg": "dist/lone-select.umd.min.js",
+  "jsdelivr": "dist/lone-select.umd.min.js",
+  "author": "lonisletend",
+  "license": "MIT",
+  "description": "A simple select component for Vue.js",
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
+  "homepage": "https://github.com/lonisletend/lone-select",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lonisletend/lone-select"
+  },
+  "bugs": {
+    "url": "https://github.com/lonisletend/lone-select/issues"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --name lone-select src/main.js",
+    "lint": "vue-cli-service lint",
+    "prepublishOnly": "$npm_execpath build",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "lint": "vue-cli-service lint"
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -24,5 +43,11 @@
     "eslint-plugin-vue": "^6.2.2",
     "prettier": "^2.2.1",
     "vue-template-compiler": "^2.6.11"
-  }
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "select",
+    "lone-select"
+  ]
 }
