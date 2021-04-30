@@ -109,7 +109,7 @@ export default {
   box-sizing: border-box;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 100;
 }
 
 .lone-select .items div {

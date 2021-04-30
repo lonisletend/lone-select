@@ -34,14 +34,14 @@ module.exports = {
             { text: 'Getting Started', link: '/guide' },
             { text: 'Components', link: '/components/' },
             // external link to git repo...again
-            { text: 'GitHub', link: '' }
+            { text: 'GitHub', link: 'https://github.com/lonisletend/lone-select' }
           ],
           sidebar: {
             '/components/': [
               {
                 title: 'Components',
                 collapsable: false,
-                children: ['lone-select-doc1']
+                children: ['lone-select-doc']
               }
             ]
           }
