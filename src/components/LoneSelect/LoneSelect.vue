@@ -52,7 +52,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.options)
     if (this.value !== null) {
       let selected = this.options.find(el => el[this.opkey] === this.value)
       this.selected = selected[this.oplabel] || null
