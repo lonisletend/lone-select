@@ -1,11 +1,13 @@
 <template>
   <div class="lone-select" :tabindex="tabindex" @blur="focus = false">
-    <div class="selected" :class="{ focus: focus }" @click="focus = !focus">{{ selected || hint }}</div>
+    <div class="selected" :class="{ focus: focus }" @click="focus = !focus">
+      {{ selected || placeholder }}
+    </div>
     <div class="items" :class="{ selectHide: !focus }">
-      <div
-        v-for="(option, i) in options" :key="i"
-        @click="selected = option[oplabel]; focus = false; $emit('input', option[opkey]);">
-      <span :class="{ selectHighlight: (option[oplabel]===selected) }">{{ option[oplabel] }}</span>
+      <div v-for="(option, i) in options" :key="i" @click="selectItem(option)">
+        <span :class="{ selectHighlight: option[oplabel] === selected }">
+          {{ option[oplabel] }}
+        </span>
       </div>
     </div>
   </div>
@@ -13,52 +15,69 @@
 
 <script>
 export default {
-  name: 'LoneSelect',
+  name: "LoneSelect",
   props: {
     options: {
       type: Array,
-      required: true
+      required: true,
     },
     value: {
       type: Number,
       required: false,
-      default: null
+      default: null,
     },
     opkey: {
       type: String,
       required: false,
-      default: 'id'
+      default: "key",
     },
     oplabel: {
       type: String,
       required: false,
-      default: 'name'
+      default: "value",
     },
-    hint: {
+    placeholder: {
       type: String,
       required: false,
-      default: '请选择'
+      default: "请选择",
     },
     tabindex: {
       type: Number,
       required: false,
-      default: 0
-    }
+      default: 0,
+    },
   },
-  data () {
+  data() {
     return {
       selected: null,
-      focus: false
-    }
+      focus: false,
+    };
   },
-  mounted () {
-    if (this.value !== null) {
-      let selected = this.options.find(el => el[this.opkey] === this.value)
-      this.selected = selected[this.oplabel] || null
-      this.$emit('input', this.selected[this.opkey])
-    }
-  }
-}
+  mounted() {
+    this.handleValue(this.value);
+  },
+  watch: {
+    value(val) {
+      this.handleValue(val);
+    },
+  },
+  methods: {
+    selectItem(option) {
+      this.selected = option[this.oplabel];
+      this.focus = false;
+      this.$emit("input", option[this.opkey]);
+    },
+    handleValue(val) {
+      let option = this.options.find((el) => el[this.opkey] === val);
+      if (option !== undefined) {
+        this.selected = option[this.oplabel];
+      } else {
+        this.selected = null;
+        this.$emit("input", null);
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -82,7 +101,7 @@ export default {
 }
 
 .lone-select .selected.focus {
-  border: 1px solid #409eff;
+  border: 1px solid #2dce89;
   border-radius: 4px;
 }
 
@@ -127,8 +146,8 @@ export default {
 }
 
 .selectHighlight {
-  color: #409eff;
-  /* background-color: #409eff; */
+  color: #2dce89;
+  /* background-color: #2dce89; */
   font-weight: 600;
 }
 </style>
