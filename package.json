@@ -1,6 +1,6 @@
 {
   "name": "lone-select",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "main": "dist/lone-select.umd.min.js",
   "unpkg": "dist/lone-select.umd.min.js",
