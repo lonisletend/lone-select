@@ -3,9 +3,9 @@
     <div class="selected" :class="{ focus: focus }" @click="focus = !focus">
       {{ selected || placeholder }}
     </div>
-    <div class="items" :class="{ selectHide: !focus }">
+    <div class="items" :class="{ loneSelectHide: !focus }">
       <div v-for="(option, i) in options" :key="i" @click="selectItem(option)">
-        <span :class="{ selectHighlight: option[oplabel] === selected }">
+        <span :class="{ loneSelectHighlight: option[oplabel] === selected }">
           {{ option[oplabel] }}
         </span>
       </div>
@@ -80,7 +80,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .lone-select {
   position: relative;
   width: 100%;
@@ -123,7 +123,7 @@ export default {
   border: 1px solid #e4e7ed;
   position: absolute;
   background-color: #fff;
-  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   left: 0;
   right: 0;
@@ -141,11 +141,11 @@ export default {
   background-color: #f5f7fa;
 }
 
-.selectHide {
+.loneSelectHide {
   display: none;
 }
 
-.selectHighlight {
+.loneSelectHighlight {
   color: #2dce89;
   /* background-color: #2dce89; */
   font-weight: 600;

@@ -56,7 +56,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
 .tag-input {
   width: 100%;
   background-color: #fff;
