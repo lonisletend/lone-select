@@ -1,5 +1,8 @@
 # lone-select
 
+## Preview
+![pewview.gif](pics/preview.gif)
+
 ## Project setup
 ```
 npm install
