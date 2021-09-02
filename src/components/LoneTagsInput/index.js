@@ -1,3 +1,3 @@
-import LoneTagsInput from './LoneTagsInput.vue'
+import LoneTagsInput from "./LoneTagsInput.vue";
 
-export default LoneTagsInput
+export default LoneTagsInput;

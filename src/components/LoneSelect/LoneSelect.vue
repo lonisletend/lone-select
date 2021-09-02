@@ -1,11 +1,30 @@
 <template>
   <div class="lone-select" :tabindex="tabindex" @blur="focus = false">
-    <div class="selected" :class="{ focus: focus }" @click="focus = !focus">
-      {{ selected || placeholder }}
+    <div
+      class="selected"
+      :class="{ focus: focus, 'un-focus': !focus }"
+      @click="focus = !focus"
+      @mousedown.prevent
+    >
+      <input
+        type="text"
+        ref="input"
+        v-model="filterVal"
+        :readonly="!filterable"
+        :placeholder="compPlaceholder"
+        @focus="filtering"
+        @blur="focus = false"
+      />
     </div>
-    <div class="items" :class="{ loneSelectHide: !focus }">
-      <div v-for="(option, i) in options" :key="i" @click="selectItem(option)">
-        <span :class="{ loneSelectHighlight: option[oplabel] === selected }">
+    <div class="items" :class="{ 'select-hide': !focus }">
+      <div
+        v-for="(option, i) in options"
+        :key="i"
+        v-show="optionVisible(option)"
+        @click="selectItem(option)"
+        @mousedown.prevent
+      >
+        <span :class="{ 'select-highlight': option[oplabel] === selected }">
           {{ option[oplabel] }}
         </span>
       </div>
@@ -22,7 +41,7 @@ export default {
       required: true,
     },
     value: {
-      type: Number,
+      type: [Number, String, Array, Object],
       required: false,
       default: null,
     },
@@ -41,6 +60,11 @@ export default {
       required: false,
       default: "请选择",
     },
+    filterable: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     tabindex: {
       type: Number,
       required: false,
@@ -49,6 +73,9 @@ export default {
   },
   data() {
     return {
+      filterVal: null,
+      filterChars: [],
+      filterItem: null,
       selected: null,
       focus: false,
     };
@@ -60,12 +87,36 @@ export default {
     value(val) {
       this.handleValue(val);
     },
+    focus(val) {
+      if (val) {
+        this.$refs.input.focus();
+      } else {
+        this.$refs.input.blur();
+        this.filterVal = this.selected;
+      }
+    },
+    filterVal(val) {
+      this.filterChars = val ? val.split("") : [];
+    },
+  },
+  computed: {
+    compPlaceholder() {
+      return this.selected ? this.selected : this.placeholder;
+    },
   },
   methods: {
     selectItem(option) {
       this.selected = option[this.oplabel];
       this.focus = false;
       this.$emit("input", option[this.opkey]);
+    },
+    filtering() {
+      this.filterVal = "";
+    },
+    optionVisible(option) {
+      let itemVal = option[this.oplabel].toLowerCase();
+      let filterVal = this.filterVal;
+      return itemVal.includes(filterVal);
     },
     handleValue(val) {
       let option = this.options.find((el) => el[this.opkey] === val);
@@ -100,34 +151,55 @@ export default {
   user-select: none;
 }
 
+.lone-select .selected input {
+  cursor: pointer;
+  color: #606266;
+  font-size: 14px;
+  border: 0 solid;
+  outline: none;
+  width: calc(100% - 4px - 2em);
+}
+
 .lone-select .selected.focus {
   border: 1px solid #2dce89;
   border-radius: 4px;
 }
 
-.lone-select .selected:after {
+.lone-select .selected.un-focus:after {
   position: absolute;
   content: "";
   top: 20px;
   right: 1em;
   width: 0;
   height: 0;
-  border: 5px solid transparent;
-  border-color: #606266 transparent transparent transparent;
+  border: 5px solid;
+  border-color: #c0c4cc transparent transparent transparent;
+}
+
+.lone-select .selected.focus:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 1em;
+  width: 0;
+  height: 0;
+  border: 5px solid;
+  border-color: transparent transparent #c0c4cc transparent;
 }
 
 .lone-select .items {
-  color: #606266;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid #e4e7ed;
   position: absolute;
-  background-color: #fff;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
   left: 0;
   right: 0;
   z-index: 100;
+  overflow: auto;
+  max-height: 260px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #606266;
 }
 
 .lone-select .items div {
@@ -141,13 +213,33 @@ export default {
   background-color: #f5f7fa;
 }
 
-.loneSelectHide {
+.select-hide {
   display: none;
 }
 
-.loneSelectHighlight {
+.select-highlight {
   color: #2dce89;
   /* background-color: #2dce89; */
   font-weight: 600;
+}
+</style>
+<style scoped>
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #fff;
+  -webkit-border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  height: 50px;
+  outline-offset: -2px;
+  outline: 2px solid #fff;
+  -webkit-border-radius: 4px;
+  border: 2px solid #fff;
 }
 </style>

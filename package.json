@@ -1,6 +1,6 @@
 {
   "name": "lone-select",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "private": false,
   "main": "dist/lone-select.umd.min.js",
   "unpkg": "dist/lone-select.umd.min.js",
@@ -28,9 +28,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
-  "dependencies": {
-    "core-js": "^3.6.5"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",

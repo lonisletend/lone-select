@@ -1,3 +1,3 @@
-import LoneSelect from './LoneSelect.vue'
+import LoneSelect from "./LoneSelect.vue";
 
-export default LoneSelect
+export default LoneSelect;
