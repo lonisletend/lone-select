@@ -5,6 +5,9 @@
       :class="{ focus: focus, 'un-focus': !focus }"
       @click="focus = !focus"
       @mousedown.prevent
+      @keydown.38="optionUp"
+      @keydown.40="optionDown"
+      @keydown.enter="optionSelect"
     >
       <input
         type="text"
@@ -18,10 +21,11 @@
     </div>
     <div class="items" :class="{ 'select-hide': !focus }">
       <div
-        v-for="(option, i) in options"
-        :key="i"
-        v-show="optionVisible(option)"
-        @click="selectItem(option)"
+        :class="{ 'select-backed': index === backedIndex }"
+        v-for="(option, index) in options"
+        :key="index"
+        v-show="optionVisible(index)"
+        @click="selectItem(index)"
         @mousedown.prevent
       >
         <span :class="{ 'select-highlight': option[oplabel] === selected }">
@@ -77,6 +81,7 @@ export default {
       filterChars: [],
       filterItem: null,
       selected: null,
+      backedIndex: null,
       focus: false,
     };
   },
@@ -105,15 +110,17 @@ export default {
     },
   },
   methods: {
-    selectItem(option) {
-      this.selected = option[this.oplabel];
+    selectItem(index) {
+      let option = this.options[index];
       this.focus = false;
+      this.backedIndex = index;
       this.$emit("input", option[this.opkey]);
     },
     filtering() {
       this.filterVal = "";
     },
-    optionVisible(option) {
+    optionVisible(index) {
+      let option = this.options[index];
       let itemVal = option[this.oplabel].toLowerCase();
       let filterVal = this.filterVal;
       return itemVal.includes(filterVal);
@@ -125,6 +132,38 @@ export default {
       } else {
         this.selected = null;
         this.$emit("input", null);
+      }
+    },
+    optionUp() {
+      if (this.options.length > 0) {
+        if (this.backedIndex === null || this.backedIndex === 0) {
+          this.backedIndex = this.options.length - 1;
+        } else {
+          this.backedIndex--;
+        }
+        if (!this.optionVisible(this.backedIndex)) {
+          this.optionUp();
+        }
+      }
+    },
+    optionDown() {
+      if (this.options.length > 0) {
+        if (
+          this.backedIndex === null ||
+          this.backedIndex === this.options.length - 1
+        ) {
+          this.backedIndex = 0;
+        } else {
+          this.backedIndex++;
+        }
+        if (!this.optionVisible(this.backedIndex)) {
+          this.optionDown();
+        }
+      }
+    },
+    optionSelect() {
+      if (this.options.length > 0 && this.backedIndex !== null) {
+        this.selectItem(this.backedIndex);
       }
     },
   },
@@ -221,6 +260,10 @@ export default {
   color: #2dce89;
   /* background-color: #2dce89; */
   font-weight: 600;
+}
+
+.select-backed {
+  background-color: #f5f7fa;
 }
 </style>
 <style scoped>
