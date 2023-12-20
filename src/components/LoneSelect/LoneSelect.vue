@@ -133,6 +133,7 @@ export default {
         this.selected = null;
         this.$emit("input", null);
       }
+      this.filterVal = this.selected;
     },
     optionUp() {
       if (this.options.length > 0) {
